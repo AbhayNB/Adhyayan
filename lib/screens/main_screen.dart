@@ -1,9 +1,10 @@
 // import 'package:adhyayan/screens/category_screen.dart';
 import 'package:adhyayan/screens/add_book.dart';
 import 'package:adhyayan/screens/books_screen.dart';
+import 'package:adhyayan/screens/login.dart';
 import 'package:flutter/material.dart';
 
-class MainScreen extends StatefulWidget{
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
   @override
   State<MainScreen> createState() => _BookstoreScreenState();
@@ -24,10 +25,18 @@ class _BookstoreScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adhyayan', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Adhyayan',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
             icon: const Icon(Icons.person_pin),
           ),
           IconButton(
@@ -37,10 +46,7 @@ class _BookstoreScreenState extends State<MainScreen> {
         ],
         backgroundColor: Theme.of(context).primaryColor,
       ),
-
       body: _screens[_currentIndex],
-      
-      
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
