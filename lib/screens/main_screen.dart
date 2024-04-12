@@ -1,4 +1,5 @@
 // import 'package:adhyayan/screens/category_screen.dart';
+import 'package:adhyayan/screens/add_book.dart';
 import 'package:adhyayan/screens/books_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +14,10 @@ class _BookstoreScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     // Replace these with your actual screen widgets
-    BookScreen(), // Bookstore screen
-    // Placeholder(), // Star screen
-    Placeholder(), // Add screen
-    // Placeholder(), // Messages screen
-    Placeholder(), // Search screen
+    const BookScreen(), // Bookstore screen
+    const AddBookScreen(), // Add screen
+    Placeholder(), // Messages screen
+    // Placeholder(), // Search screen
   ];
 
   @override

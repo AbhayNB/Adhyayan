@@ -12,9 +12,3 @@ class BookCategory {
   });
 }
 
-// const category = [
-//   "All",
-//   "Trending",
-//   "Latest",
-//   "Best-Seller"
-// ];

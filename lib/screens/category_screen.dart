@@ -10,7 +10,6 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  int myIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
