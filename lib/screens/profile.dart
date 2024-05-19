@@ -69,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     ProfileMenuItem(
                       icon: Icons.book_outlined,
-                      text: 'Book Shared',
+                      text: 'Book Shelf',
                       onTap: () {
                         Navigator.push(
                           context,
