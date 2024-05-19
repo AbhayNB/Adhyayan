@@ -17,7 +17,7 @@ class _BookstoreScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const BookScreen(), // Bookstore screen
     const AddBookScreen(), // Add screen
-    ProfileScreen(),
+    const Scaffold(body: Center(child: Text('No Messages Yet'))),
   ];
 
   @override
@@ -83,7 +83,7 @@ class _BookstoreScreenState extends State<MainScreen> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         backgroundColor:
-            Theme.of(context).primaryColor, // Set the background color
+          Theme.of(context).primaryColor, // Set the background color
         currentIndex: _currentIndex, // Set the initial selected index
         onTap: (index) {
           setState(() {

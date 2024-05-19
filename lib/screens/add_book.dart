@@ -130,6 +130,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
+                
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the book title';
@@ -156,6 +157,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the author';
@@ -182,6 +184,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
+                style: TextStyle(color: Colors.white),
+
               ),
               const SizedBox(
                 height: 16,
