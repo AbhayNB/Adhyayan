@@ -146,7 +146,7 @@ class _BookScreenState extends State<BookScreen> {
                 borderRadius: BorderRadius.circular(10.0),
                 image: const DecorationImage(
                   image: AssetImage(
-                      'assets/images/banner.jpg'), // Replace with your image asset path
+                      'assets/images/banner.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),

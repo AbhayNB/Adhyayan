@@ -2,6 +2,7 @@
 import 'package:adhyayan/screens/add_book.dart';
 import 'package:adhyayan/screens/books_screen.dart';
 import 'package:adhyayan/screens/login.dart';
+import 'package:adhyayan/screens/profile.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -14,11 +15,9 @@ class _BookstoreScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    // Replace these with your actual screen widgets
     const BookScreen(), // Bookstore screen
     const AddBookScreen(), // Add screen
-    Placeholder(), // Messages screen
-    // Placeholder(), // Search screen
+    ProfileScreen(),
   ];
 
   @override
@@ -37,16 +36,27 @@ class _BookstoreScreenState extends State<MainScreen> {
                 MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             },
-            icon: const Icon(Icons.person_pin),
+            icon: const Icon(Icons.login_outlined),
           ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications_active_outlined),
           ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            },
+            icon: const Icon(Icons.perm_identity_sharp),
+          ),
         ],
         backgroundColor: Theme.of(context).primaryColor,
       ),
+
       body: _screens[_currentIndex],
+
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
