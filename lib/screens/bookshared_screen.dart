@@ -16,7 +16,7 @@ class BookSharedScreen extends StatelessWidget {
   ),
     Book(
     name: "Sapiens: A Brief History of Humankind",
-    image: "assets/images/sapiens.jpeg",
+    image: "assets/images/1984.jpeg",
     author: "Yuval Noah Harari",
     rating: 4.8,
     reviews: 190,
@@ -59,42 +59,49 @@ class BookSharedScreen extends StatelessWidget {
     );
   }
 
-  Widget buildBookListView(List<Book> books) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Number of Books Shared: ${books.length}',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+Widget buildBookListView(List<Book> books) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Number of Books Shared: ${books.length}',
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
-        SizedBox(height: 20),
-        Expanded(
-          child: ListView.builder(
-            itemCount: books.length,
-            itemBuilder: (context, index) {
-              final book = books[index];
-              return Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                margin: EdgeInsets.symmetric(vertical: 10),
-                color: Colors.grey[850],
+      ),
+      const SizedBox(height: 20),
+      Expanded(
+        child: ListView.builder(
+          itemCount: books.length,
+          itemBuilder: (context, index) {
+            final book = books[index];
+            return Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: Colors.grey[850],
+              child: InkWell(
+                onTap: () {
+                  // Handle book tap here
+                },
                 child: ListTile(
                   contentPadding: EdgeInsets.all(10),
-                  leading: Image.network(
-                    book.image,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.network(
+                      book.image,
+                      width: 80,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   title: Text(
                     book.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -106,25 +113,58 @@ class BookSharedScreen extends StatelessWidget {
                         book.author,
                         style: TextStyle(color: Colors.grey[400]),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
                           Icon(Icons.person, size: 16, color: Colors.grey[400]),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
                             book.renterName,
                             style: TextStyle(color: Colors.grey[400]),
                           ),
                         ],
                       ),
-                    ],
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(Icons.star, size: 16, color: Colors.yellow),
+                          const SizedBox(width: 5),
+                          Text(
+                            book.rating.toString(),
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            '(${book.reviews} reviews)',
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(Icons.currency_rupee, size: 16, color: Colors.grey[400]),
+                          const SizedBox(width: 5),
+                          Text(
+                            'Weekly: \$${book.weeklyPrice.toStringAsFixed(2)}',
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Monthly: \$${book.monthlyPrice.toStringAsFixed(2)}',
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                        ],
+                      ),],
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
+}
+
