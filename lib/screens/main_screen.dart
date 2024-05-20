@@ -4,6 +4,8 @@ import 'package:adhyayan/screens/books_screen.dart';
 import 'package:adhyayan/screens/login.dart';
 import 'package:adhyayan/screens/profile.dart';
 import 'package:flutter/material.dart';
+import '../providers/auth.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -31,10 +33,7 @@ class _BookstoreScreenState extends State<MainScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
+              Provider.of<Auth>(context, listen: false).logout();
             },
             icon: const Icon(Icons.login_outlined),
           ),
@@ -54,9 +53,7 @@ class _BookstoreScreenState extends State<MainScreen> {
         ],
         backgroundColor: Theme.of(context).primaryColor,
       ),
-
       body: _screens[_currentIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

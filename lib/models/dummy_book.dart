@@ -1,13 +1,19 @@
-class Book {
+import 'dart:convert';
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+
+import '../models/http_exception.dart';
+
+class Book with ChangeNotifier {
   String name;
   String image;
   String author;
-  double rating;
-  int reviews;
+  String rating;
+  String reviews;
   bool isLiked;
   String renterName; // New property for renter's name
-  double weeklyPrice; // New property for weekly rental price
-  double monthlyPrice; // New property for monthly rental price
+  String weeklyPrice; // New property for weekly rental price
+  String monthlyPrice; // New property for monthly rental price
 
   Book({
     required this.name,

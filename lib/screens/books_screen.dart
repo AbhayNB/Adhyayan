@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:adhyayan/data/dummy_data.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../data/dummy_data.dart';
 
 class BookScreen extends StatefulWidget {
   const BookScreen({super.key});
@@ -24,6 +25,15 @@ class _BookScreenState extends State<BookScreen> {
   ];
 
   int _currentSlide = 0;
+  @override
+  void initState() {
+    // Provider.of<Products>(context).fetchAndSetProducts(); // WON'T WORK!
+    // Future.delayed(Duration.zero).then((_) {
+    //   Provider.of<Products>(context).fetchAndSetProducts();
+    // });
+    fetchAndSetProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +155,7 @@ class _BookScreenState extends State<BookScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 image: const DecorationImage(
-                  image: AssetImage(
-                      'assets/images/banner.jpg'),
+                  image: AssetImage('assets/images/banner.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -175,7 +184,7 @@ class _BookScreenState extends State<BookScreen> {
             Row(
               children: [
                 const Text(
-                  'Popular',
+                  'All Books',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -186,7 +195,7 @@ class _BookScreenState extends State<BookScreen> {
                 GestureDetector(
                   onTap: () {},
                   child: const Text(
-                    'See All >',
+                    '',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -266,22 +275,23 @@ class _BookScreenState extends State<BookScreen> {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                          const Text(
-                            'Available for rent from:',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '${popularBooks.renterName}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          Text(
-                            'Weekly Price: \$${popularBooks.weeklyPrice.toStringAsFixed(2)}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          Text(
-                            'Monthly Price: \$${popularBooks.monthlyPrice.toStringAsFixed(2)}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
+                              const Text(
+                                'Available for rent from:',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${popularBooks.renterName}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              Text(
+                                'Weekly Price: \$${popularBooks.weeklyPrice}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              Text(
+                                'Monthly Price: \$${popularBooks.monthlyPrice}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
                             ],
                           ),
                         ),
@@ -291,8 +301,6 @@ class _BookScreenState extends State<BookScreen> {
                 );
               }).toList(),
             ),
-          
-
           ],
         ),
       ),

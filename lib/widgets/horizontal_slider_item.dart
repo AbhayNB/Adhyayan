@@ -79,18 +79,19 @@ class HorizontalSliderItem extends StatelessWidget {
                           const SizedBox(height: 8),
                           const Text(
                             'Available for rent from:',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '${book.renterName}',
                             style: const TextStyle(fontSize: 12),
                           ),
                           Text(
-                            'Weekly Price: \$${book.weeklyPrice.toStringAsFixed(2)}',
+                            'Weekly Price: \$${book.weeklyPrice}',
                             style: const TextStyle(fontSize: 12),
                           ),
                           Text(
-                            'Monthly Price: \$${book.monthlyPrice.toStringAsFixed(2)}',
+                            'Monthly Price: \$${book.monthlyPrice}',
                             style: const TextStyle(fontSize: 12),
                           ),
                         ],

@@ -1,6 +1,12 @@
 import 'package:adhyayan/models/Addbook.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:adhyayan/screens/main_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
+import 'profile.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({Key? key}) : super(key: key);
@@ -64,22 +70,47 @@ class _AddBookScreenState extends State<AddBookScreen> {
 
       // Construct Book object with entered data
       BookForRent add_book = BookForRent(
-        title: title,
-        author: author,
-        isbn: isbn,
-        genre: genre,
-        description: description,
-        condition: _condition,
-        photos: _photos,
-        price: price,
-        contact: contact,
-        location: location,
-      );
-
+          id: uid,
+          title: title,
+          author: author,
+          isbn: isbn,
+          genre: genre,
+          description: description,
+          condition: _condition,
+          // photos: ,
+          price: price,
+          contact: contact,
+          location: location,
+          uploadedby: uname);
+      print(uname);
       // Add logic here to handle book submission
+      var url = Uri.https(
+          'adhyayan-90a7e-default-rtdb.firebaseio.com', 'booksforrent.json');
+      print("start");
+      var response = http.post(url,
+          body: json.encode({
+            'id': uid,
+            'title': title,
+            'author': author,
+            'isbn': isbn,
+            'genre': genre,
+            'description': description,
+            'condition': _condition,
+            // photos: ,
+            'price': price,
+            'contact': contact,
+            'location': location,
+            'by': uname,
+          }));
+      print('end');
       // For example, save to database or send to API
       // Reset form after submission
       _formKey.currentState!.reset();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
+      print('reset');
     }
   }
 
@@ -172,6 +203,26 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   labelText: 'ISBN',
                   prefixIcon: const Icon(Icons.book, color: Colors.white),
                   hintText: '978-1-4028-9462-6',
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextFormField(
+                controller: _priceController,
+                decoration: InputDecoration(
+                  labelText: 'Price',
+                  prefixIcon: const Icon(Icons.book, color: Colors.white),
+                  hintText: '100',
                   hintStyle: TextStyle(color: Colors.grey[400]),
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.white),

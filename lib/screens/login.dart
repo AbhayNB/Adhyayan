@@ -1,8 +1,9 @@
-import 'package:adhyayan/screens/signup.dart';
-import 'package:adhyayan/widgets/animated_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
+import '../models/http_exception.dart';
+import 'signup.dart';
+import '../widgets/animated_text.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,183 +12,136 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final phoneController = TextEditingController();
+  final emailController = TextEditingController(); // Changed to emailController
   final passwordController = TextEditingController();
   bool _isSubmitting = false;
+  String _errorMessage = '';
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occurred!'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      _isSubmitting = true;
+      _errorMessage = '';
+    });
+    try {
+      await Provider.of<Auth>(context, listen: false).login(
+        emailController.text, // Changed to emailController
+        passwordController.text,
+      );
+      // Navigate to the next screen upon successful login
+    } on HttpException catch (error) {
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
+    }
+    setState(() {
+      _isSubmitting = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text('Login'),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          AnimatedWelcomeText(value: "Welcome Back!"),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 40,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blueGrey),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: phoneController,
-                        decoration: const InputDecoration(
-                          labelText: 'Phone Number',
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-                        },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              AnimatedWelcomeText(value: "Welcome Back!"),
+              SizedBox(height: 20),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: emailController, // Changed to emailController
+                      decoration:
+                          InputDecoration(labelText: 'Email'), // Changed label
+                      keyboardType:
+                          TextInputType.emailAddress, // Changed to email
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email'; // Updated error message
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(labelText: 'Password'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    if (_isSubmitting) CircularProgressIndicator(),
+                    if (!_isSubmitting)
+                      ElevatedButton(
+                        onPressed: _submit,
+                        child: Text('Login'),
                       ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      if (_isSubmitting) ...[
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 16),
-                      ] else ...[
-                        InkWell(
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              setState(() {
-                                _isSubmitting = true;
-                              });
-                              // Handle form submission here
-                              // Simulate submission completion after 2 seconds
-                              Future.delayed(const Duration(seconds: 2), () {
-                                setState(() {
-                                  _isSubmitting = false;
-                                });
-                                // Navigate to next screen or perform desired action
-                              });
-                            }
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            // Handle "Forgot password?" link
                           },
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            padding: const EdgeInsets.all(16.0),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.send, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Submit',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
+                          child: Text('Forgot Password?'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignupScreen(),
+                            ));
+                          },
+                          child: Text('Sign Up'),
                         ),
                       ],
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    // Handle "Forgot password?" link here
-                                  },
-                                  child: const Text(
-                                    'Reset password',
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SignupScreen()),
-                                    );
-                                    // Handle "Sign up" link here
-                                  },
-                                  child: const Text(
-                                    'Sign up',
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    ),
+                    if (_errorMessage.isNotEmpty)
+                      Text(
+                        _errorMessage,
+                        style: TextStyle(color: Colors.red),
                       ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+                  ],
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
